@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ROVAS Connector for iD Editor",
-  "version": "1.60",
+  "version": "1.79",
   "description": "Tracks editing session in Openstreetmap iD and sends working reports to ROVAS App.",
   "permissions": [
     "storage",
@@ -10,6 +10,7 @@
   "host_permissions": [
     "https://www.openstreetmap.org/edit*",
     "https://api.openstreetmap.org/*",  
+    "https://rovas.app/*",	
     "https://dev.rovas.app/*",         
     "https://overpass-api.de/*",       
     "https://neofund.sk/*",

@@ -1,138 +1,214 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>OpenStreetMap iD Time Tracker for ROVAS</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 15px;
-      width: 440px;
-      line-height: 1.4;
-      color: #333;
-    }
-    h3 {
-      color: #007bff;
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
-    p {
-      margin-bottom: 10px;
-    }
-    strong {
-      color: #0056b3;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    input[type="text"] {
-      width: calc(100% - 20px); /* Adjust width considering padding */
-      padding: 8px 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    }
-    input[type=password] {
-      width: 100%;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 15px;
-      margin-top: 15px;
-      transition: background-color 0.2s ease;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    #rovasPageBtn { /* Specific ID for the "Open Rovas" button */
-      background-color: #007bff; /* Blue for the Rovas page button */
-    }
-    #rovasPageBtn:hover {
-      background-color: #0056b3;
-    }
-    #saveBtn { /* Specific ID for the Save button */
-      background-color: #6c757d; /* Gray for save button */
-    }
-    #saveBtn:hover {
-      background-color: #5a6268;
-    }
-    #status {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #666;
-    }
-    #configStatus { /* For displaying save/load status of keys */
-      margin-top: 10px;
-      font-size: 12px;
-      color: green;
-    }
-	.license-text { /* New style for the license text */
-        font-size: 11px;
-        color: #555;
-        margin-bottom: 15px;
-        line-height: 1.6;
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        padding: 8px;
-        border-radius: 4px;
-    }
-    .checkbox-container { /* New style for the checkbox container */
-        margin-bottom: 12px;
-        display: flex;
-        align-items: flex-start; /* Aligns text and checkbox at the top */
-        font-size: 10px;
-        color: #444;
-    }
-    .checkbox-container input[type="checkbox"] {
-        margin-top: 3px; /* Aligns the checkbox better with text */
-        margin-right: 8px;
-        flex-shrink: 0; /* Prevents the checkbox from shrinking */
-    }
-    #saveBtn:disabled { /* Style for disabled save button */
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-  </style>
+    <title>OpenStreetMap iD Time Tracker for ROVAS</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 15px;
+            width: 440px;
+            line-height: 1.4;
+            color: #333;
+        }
+        h3 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #0056b3;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=password] {
+            width: 100%;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 5px;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #rovasPageBtn {
+            background-color: #007bff;
+        }
+        #rovasPageBtn:hover {
+            background-color: #0056b3;
+        }
+        #saveBtn {
+            background-color: #6c757d;
+        }
+        #saveBtn:hover {
+            background-color: #5a6268;
+        }
+        #status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        #configStatus {
+            margin-top: 10px;
+            font-size: 12px;
+            color: green;
+        }
+        .license-text {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .checkbox-container {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 10px;
+            color: #444;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-top: 3px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        #saveBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .rovas-section {
+            background-color: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        h4.section-title {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        .score-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .score-info span.label {
+            color: #333;
+        }
+        .score-info span.value {
+            font-size: 1.1em;
+            color: #28a745;
+        }
+        .loading {
+            font-style: italic;
+            color: #6c757d;
+        }
+        #verifications-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 5px;
+        }
+        #verifications-list li {
+            padding: 8px;
+            background-color: #fff;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #verificationsStatus {
+            text-align: center;
+            font-style: italic;
+            color: #6c757d;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
-  <h3 id="titleText"></h3>
-  <p id="noteText"></p>
-  <p id="infoText"></p>
-  <button id="rovasPageBtn"></button>
+    <h3 id="titleText"></h3>
+    <p id="noteText"></p>
+    <p id="infoText"></p>
+    <button id="rovasPageBtn"></button>
 
-  <div id="tempBanner" style="display:none; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px; padding: 8px; margin-bottom: 10px; font-size: 13px;">
-    <span id="tempBannerText"></span>
-  </div>
+    <div id="tempBanner" style="display:none; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px; padding: 8px; margin-bottom: 10px; font-size: 13px;">
+        <span id="tempBannerText"></span>
+    </div>
 
-  <p class="license-text" id="feeText"></p>
+    <hr style="margin: 20px 0; border-color: #eee;">
 
-  <hr style="margin: 20px 0; border-color: #eee;">
+    <div class="rovas-section">
+        <h4 class="section-title" id="userStatsTitle"></h4>
+        <div class="score-info">
+            <span class="label" id="meritsScoreText"></span>
+            <span class="value loading" id="merits-score">...</span>
+        </div>
+        <div class="score-info">
+            <span class="label" id="chronsScoreText"></span>
+            <span class="value loading" id="chrons-score">...</span>
+        </div>
+    </div>
 
-  <h4 id="apiCredsTitle"></h4>
-  <label for="apiKey" id="apiKeyLabel"></label>
-  <input type="password" id="apiKey" placeholder="">
-  <label for="token" id="tokenLabel"></label>
-  <input type="password" id="token" placeholder="">
-  
-  <div class="checkbox-container">
-    <input type="checkbox" id="companyWorkCheckbox">
-    <label for="companyWorkCheckbox" id="companyWorkLabel"></label>
-  </div>
-  
+    <div class="rovas-section">
+        <h4 class="section-title" id="reportsToValidateTitle"></h4>
+        <ul id="verifications-list">
+        </ul>
+        <div id="verificationsStatus" class="loading">...</div>
+    </div>
+    
+    <hr style="margin: 20px 0; border-color: #eee;">
+
+    <h4 id="apiCredsTitle"></h4>
+    <label for="apiKey" id="apiKeyLabel"></label>
+    <input type="password" id="apiKey" placeholder="">
+    <label for="token" id="tokenLabel"></label>
+    <input type="password" id="token" placeholder="">
+    
+    <div class="checkbox-container">
+        <input type="checkbox" id="companyWorkCheckbox">
+        <label for="companyWorkCheckbox" id="companyWorkLabel"></label>
+    </div>
+    
     <button id="saveBtn" disabled></button>
-  <p id="configStatus"></p>
+    <p id="configStatus"></p>
 
-  <label for="langSelect" id="langLabel"></label>
-  <select id="langSelect"></select>
+    <label for="langSelect" id="langLabel"></label>
+    <select id="langSelect"></select>
 
-  <script src="popup.js"></script>
+    <p class="license-text" id="feeText"></p>
+
+    <script src="popup.js"></script>
 </body>
 </html>

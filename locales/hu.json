@@ -1,5 +1,5 @@
 {
-  "title": "OSM iD munkamenet időmérő a ROVAS-hoz",
+  "title": "OSM iD munkamenet időmérő a ROVAS-hoz -",
   "note": "MEGJEGYZÉS: Az alkalmazás használatához regisztrált felhasználónak kell lenned a Rováson, és rendelkezned kell API KULCCSAL és TOKENNEL (elérhető a fiókod oldalán).",
   "info": "Az alábbi gombra kattintva megnyílik az OpenStreetMap projekt a Rováson.",
   "open_rovas": "Rovás megnyitása",
@@ -37,5 +37,15 @@
   "status_company_work_error": "Ezt a bővítményt tilos használni, ha egy cég fizet az iD-n végzett munkádért.",
   "confirm_submit_report_prompt": "Biztosan el akarod küldeni a munkajelentést a {id} változtatáshoz? A számított időtartam {duration_hms} ({duration_decimal} tizedes perc). A beküldés előtt alacsonyabb értéket adhatsz meg a módosításhoz:",
   "alert_invalid_duration": "Érvénytelen időtartam. Pozitív számot adj meg.",
-  "alert_duration_too_high": "A megadott időtartam nem lehet több, mint a számított idő."
+  "alert_duration_too_high": "A megadott időtartam nem lehet több, mint a számított idő.",
+  "user_stats_title": "ROVAS felhasználói statisztikák 📊",
+  "merits_score_text": "Meritek:",
+  "chrons_score_text": "Krónok:",
+  "reports_to_validate_title": "Ellenőrizendő jelentések 📝",
+  "loading_data": "Betöltés...",
+  "loading_reports": "Jelentések betöltése...",
+  "no_reports_to_validate": "Nincsenek ellenőrizendő jelentések.",
+  "verifications_error": "Hiba a jelentések letöltésekor.",
+  "report_id": "Jelentés",
+  "hours_short": "ó"
 } 

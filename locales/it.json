@@ -1,5 +1,5 @@
 {
-  "title": "Time tracker per le sessioni Openstreetmap su iD per ROVAS",
+  "title": "Time tracker sessioni Openstreetmap su iD per ROVAS -",
   "note": "NOTA: Per utilizzare questa estensione, devi essere un utente registrato su Rovas e avere la tua API KEY e TOKEN (disponibili nella pagina del tuo account). Devi anche essere azionista del progetto OpenStreetMap (ID 1998).",
   "info": "Clicca il pulsante qui sotto per aprire il progetto OpenStreetMap su Rovas.",
   "open_rovas": "Apri Rovas",
@@ -37,5 +37,15 @@
   "status_company_work_error": "Non è permesso usare questo plugin se si è pagati da un'azienda per il lavoro effettuato su iD.",
   "confirm_submit_report_prompt": "Sei sicuro di voler inviare un report di lavoro per il changeset {id}? La durata calcolata è di {duration_hms} ({duration_decimal} minuti decimali). Puoi inserire un valore inferiore per modificare la durata prima di inviare:",
   "alert_invalid_duration": "Durata non valida. Inserisci un numero positivo.",
-  "alert_duration_too_high": "La durata inserita non può essere superiore al tempo calcolato."
+  "alert_duration_too_high": "La durata inserita non può essere superiore al tempo calcolato.",
+  "user_stats_title": "Statistiche Utente ROVAS 📊",
+  "merits_score_text": "Meriti:",
+  "chrons_score_text": "Chrons:",
+  "reports_to_validate_title": "Report da Validare 📝",
+  "loading_data": "Caricamento...",
+  "loading_reports": "Caricamento report...",
+  "no_reports_to_validate": "Nessun report da validare.",
+  "verifications_error": "Errore nel recupero dei report.",
+  "report_id": "Report",
+  "hours_short": "h"
 } 

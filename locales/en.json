@@ -1,5 +1,5 @@
 {
-  "title": "OSM iD Session Time Tracker for ROVAS",
+  "title": "OSM iD Session Time Tracker for ROVAS -",
   "note": "NOTE: To use this extension, you must be a registered user in Rovas and have your API KEY and TOKEN (available on your account page).",
   "info": "Clicking the button below opens the OpenStreetMap project in Rovas.",
   "open_rovas": "Open Rovas",
@@ -35,7 +35,17 @@
   "fee_text": "To reward the authors of this Rovas Connector Plugin, a fee equal to 3% of the amount you earn from reports created by the plugin will be levied on those earnings.",
   "company_work_checkbox": "I am not paid for my work on OpenStreetMap by a company",
   "status_company_work_error": "This plugin is not allowed for use if you are paid by a company for work performed on iD.",
-  "confirm_submit_report_prompt": "Are you sure you want to submit a work report for changeset {id}? The calculated duration is {duration_hms} ({duration_decimal} decimal minutes). You can enter a lower value to modify the duration before submitting:"
+  "confirm_submit_report_prompt": "Are you sure you want to submit a work report for changeset {id}? The calculated duration is {duration_hms} ({duration_decimal} decimal minutes). You can enter a lower value to modify the duration before submitting:",
   "alert_invalid_duration": "Invalid duration. Please enter a positive number.",
-  "alert_duration_too_high": "The entered duration cannot be higher than the calculated time."
+  "alert_duration_too_high": "The entered duration cannot be higher than the calculated time.",
+  "user_stats_title": "ROVAS User Stats 📊",
+  "merits_score_text": "Merits:",
+  "chrons_score_text": "Chrons:",
+  "reports_to_validate_title": "Reports to Validate 📝",
+  "loading_data": "Loading...",
+  "loading_reports": "Loading reports...",
+  "no_reports_to_validate": "No reports to validate.",
+  "verifications_error": "Error fetching reports.",
+  "report_id": "Report",
+  "hours_short": "h"  
 } 

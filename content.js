@@ -58,194 +58,205 @@ async function loadRovasCredentials() {
             ROVAS_TOKEN = result.rovasToken || null;
             if (!ROVAS_API_KEY || !ROVAS_TOKEN) {
                 console.warn("[ROVAS] API Key or Token not found in storage. Please configure them in the extension popup.");
-                // A non-blocking alert for the user might be considered here, but for now,
-                // the process will be halted in sendRovasReport if keys are missing.
             }
             resolve();
         });
     });
 }
 
+// --- Event listener for browser tab visibility ---
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        if (!isPaused && intervalId) {
+            console.log("[ROVAS] Browser hidden: session paused.");
+            pauseSession();
+        }
+    } else {
+        if (isPaused) {
+            console.log("[ROVAS] Browser visible: session activated.");
+            startSession();
+        }
+    }
+});
+
 // --- Patch createTimerBadge and all alerts to use translations ---
 async function createTimerBadge() {
-  if (document.getElementById("rovas-timer-badge")) return;
-  await loadTranslations();
+    if (document.getElementById("rovas-timer-badge")) return;
+    await loadTranslations();
 
-  // Check if credentials are available before creating the badge
-  await loadRovasCredentials();
-  if (!ROVAS_API_KEY || !ROVAS_TOKEN) {
-    console.log("[ROVAS] No API credentials found. Timer badge not created.");
-    return;
-  }
+    // Check if credentials are available before creating the badge
+    await loadRovasCredentials();
+    if (!ROVAS_API_KEY || !ROVAS_TOKEN) {
+        console.log("[ROVAS] No API credentials found. Timer badge not created.");
+        return;
+    }
 
-  const badge = document.createElement("div");
-  badge.id = "rovas-timer-badge";
-  badge.style.position = "fixed";
-  badge.style.bottom = "20px";
-  badge.style.right = "20px";
-  badge.style.padding = "8px 12px";
-  badge.style.backgroundColor = "#323232";
-  badge.style.color = "#fff";
-  badge.style.fontSize = "14px";
-  badge.style.fontFamily = "monospace";
-  badge.style.borderRadius = "8px";
-  badge.style.zIndex = "9999";
-  badge.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
-  badge.style.display = "flex";
-  badge.style.alignItems = "center";
-  badge.style.gap = "10px";
+    const badge = document.createElement("div");
+    badge.id = "rovas-timer-badge";
+    badge.style.position = "fixed";
+    badge.style.bottom = "20px";
+    badge.style.right = "20px";
+    badge.style.padding = "8px 12px";
+    badge.style.backgroundColor = "#323232";
+    badge.style.color = "#fff";
+    badge.style.fontSize = "14px";
+    badge.style.fontFamily = "monospace";
+    badge.style.borderRadius = "8px";
+    badge.style.zIndex = "9999";
+    badge.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
+    badge.style.display = "flex";
+    badge.style.alignItems = "center";
+    badge.style.gap = "10px";
 
-  timerText = document.createElement("span");
-  timerText.textContent = "🕒 0m 0s";
+    timerText = document.createElement("span");
+    timerText.textContent = "🕒 0m 0s";
 
-  const stopBtn = document.createElement("button");
-  stopBtn.textContent = t('stop');
-  stopBtn.id = "rovas-stop-btn";
-  stopBtn.style.cursor = "pointer";
-  stopBtn.onclick = stopSession;
+    const stopBtn = document.createElement("button");
+    stopBtn.textContent = t('stop');
+    stopBtn.id = "rovas-stop-btn";
+    stopBtn.style.cursor = "pointer";
+    stopBtn.onclick = stopSession;
 
-  const startBtn = document.createElement("button");
-  startBtn.textContent = t('start');
-  startBtn.id = "rovas-start-btn";
-  startBtn.style.cursor = "pointer";
-  startBtn.onclick = startSession;
+    const startBtn = document.createElement("button");
+    startBtn.textContent = t('start');
+    startBtn.id = "rovas-start-btn";
+    startBtn.style.cursor = "pointer";
+    startBtn.onclick = startSession;
 
-  const pauseBtn = document.createElement("button");
-  pauseBtn.textContent = t('pause');
-  pauseBtn.id = "rovas-pause-btn";
-  pauseBtn.style.cursor = "pointer";
-  pauseBtn.onclick = pauseSession;
+    const pauseBtn = document.createElement("button");
+    pauseBtn.textContent = t('pause');
+    pauseBtn.id = "rovas-pause-btn";
+    pauseBtn.style.cursor = "pointer";
+    pauseBtn.onclick = pauseSession;
 
-  badge.appendChild(timerText);
-  badge.appendChild(startBtn);
-  badge.appendChild(pauseBtn);
-  badge.appendChild(stopBtn);
+    badge.appendChild(timerText);
+    badge.appendChild(startBtn);
+    badge.appendChild(pauseBtn);
+    badge.appendChild(stopBtn);
 
-  document.body.appendChild(badge);
-  startSession(); // Automatically starts the timer at the beginning of mapping session
+    document.body.appendChild(badge);
+    startSession(); // Automatically starts the timer at the beginning of mapping session
 }
 
 function startSession() {
-  if (intervalId && !isPaused) return;
+    if (intervalId && !isPaused) return;
 
-  if (isPaused) {
-    pausedDuration += (new Date() - pauseStartTime);
-    isPaused = false;
-    pauseStartTime = null;
-  } else {
-    startTime = new Date();
-    pausedDuration = 0;
-    latestChangesetId = null; // Resets ID when a new session is started
-  }
+    if (isPaused) {
+        pausedDuration += (new Date() - pauseStartTime);
+        isPaused = false;
+        pauseStartTime = null;
+    } else {
+        startTime = new Date();
+        pausedDuration = 0;
+        latestChangesetId = null; // Resets ID when a new session is started
+    }
 
-  updateTimerText(new Date() - startTime - pausedDuration);
+    updateTimerText(new Date() - startTime - pausedDuration);
 
-  intervalId = setInterval(() => {
-    const now = new Date();
-    updateTimerText(now - startTime - pausedDuration);
-  }, 1000);
+    intervalId = setInterval(() => {
+        const now = new Date();
+        updateTimerText(now - startTime - pausedDuration);
+    }, 1000);
 
-  setButtonsState('running');
-  console.log("[ROVAS] Session started/resumed.");
+    setButtonsState('running');
+    console.log("[ROVAS] Session started/resumed.");
 }
 
 function pauseSession() {
-  if (!intervalId || isPaused) return;
+    if (!intervalId && !isPaused) return;
 
-  clearInterval(intervalId);
-  intervalId = null;
-  isPaused = true;
-  pauseStartTime = new Date();
-
-  setButtonsState('paused');
-  console.log("[ROVAS] Session paused.");
+    clearInterval(intervalId);
+    intervalId = null;
+    isPaused = true;
+    pauseStartTime = new Date();
+    
+    setButtonsState('paused');
+    console.log("[ROVAS] Session paused.");
 }
 
 function stopSession() {
-  if (!intervalId && !isPaused) return;
+    if (!intervalId && !isPaused) return;
 
-  clearInterval(intervalId);
-  intervalId = null;
-  isPaused = false;
-  pauseStartTime = null;
-  pausedDuration = 0;
-  latestChangesetId = null;
-
-  updateTimerText(0);
-  setButtonsState('stopped');
-  console.log("[ROVAS] Timer stopped.");
-  alert(t('alert_session_stopped'));
+    clearInterval(intervalId);
+    intervalId = null;
+    isPaused = false;
+    pauseStartTime = null;
+    pausedDuration = 0;
+    latestChangesetId = null;
+    updateTimerText(0);
+    setButtonsState('stopped');
+    console.log("[ROVAS] Timer stopped.");
+    alert(t('alert_session_stopped'));
 }
 
 function updateTimerText(diffMs) {
-  if (isNaN(diffMs) || diffMs < 0) diffMs = 0;
-  const minutes = Math.floor(diffMs / 60000);
-  const seconds = Math.floor((diffMs % 60000) / 1000);
-  timerText.textContent = `🕒 ${minutes}m ${seconds}s`;
+    if (isNaN(diffMs) || diffMs < 0) diffMs = 0;
+    const minutes = Math.floor(diffMs / 60000);
+    const seconds = Math.floor((diffMs % 60000) / 1000);
+    timerText.textContent = `🕒 ${minutes}m ${seconds}s`;
 }
 
 function resetTimer() {
-  clearInterval(intervalId);
-  intervalId = null;
-  startTime = null;
-  pausedDuration = 0;
-  isPaused = false;
-  pauseStartTime = null;
-  latestChangesetId = null;
-  updateTimerText(0);
-  setButtonsState('stopped');
-  console.log("[ROVAS] Timer reset."); 
+    clearInterval(intervalId);
+    intervalId = null;
+    startTime = null;
+    pausedDuration = 0;
+    isPaused = false;
+    pauseStartTime = null;
+    latestChangesetId = null;
+    updateTimerText(0);
+    setButtonsState('stopped');
+    console.log("[ROVAS] Timer reset.");
 }
 
 function setButtonsState(state) {
-  const badge = document.getElementById("rovas-timer-badge");
-  if (!badge) return;
+    const badge = document.getElementById("rovas-timer-badge");
+    if (!badge) return;
 
-  const startBtn = badge.querySelector("#rovas-start-btn");
-  const pauseBtn = badge.querySelector("#rovas-pause-btn");
-  const stopBtn = badge.querySelector("#rovas-stop-btn");
+    const startBtn = badge.querySelector("#rovas-start-btn");
+    const pauseBtn = badge.querySelector("#rovas-pause-btn");
+    const stopBtn = badge.querySelector("#rovas-stop-btn");
 
-  switch (state) {
-    case 'running':
-      startBtn.disabled = true;
-      pauseBtn.disabled = false;
-      stopBtn.disabled = false;
-      break;
-    case 'paused':
-      startBtn.disabled = false;
-      pauseBtn.disabled = true;
-      stopBtn.disabled = false;
-      break;
-    case 'stopped':
-      startBtn.disabled = false;
-      pauseBtn.disabled = true;
-      stopBtn.disabled = true;
-      break;
-  }
+    switch (state) {
+        case 'running':
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            stopBtn.disabled = false;
+            break;
+        case 'paused':
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = false;
+            break;
+        case 'stopped':
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+            break;
+    }
 }
 
 function fetchChangesetComment(changesetId, callback) {
-  fetch(`https://api.openstreetmap.org/api/0.6/changeset/${changesetId}`)
-    .then(response => {
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return response.text();
-    })
-    .then(xmlText => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-      const commentTag = xmlDoc.querySelector("changeset tag[k='comment']");
-      const comment = commentTag ? commentTag.getAttribute("v") : "";
-      callback(null, comment);
-    })
-    .catch(err => {
-      callback(err);
-    });
+    fetch(`https://api.openstreetmap.org/api/0.6/changeset/${changesetId}`)
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.text();
+        })
+        .then(xmlText => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+            const commentTag = xmlDoc.querySelector("changeset tag[k='comment']");
+            const comment = commentTag ? commentTag.getAttribute("v") : "";
+            callback(null, comment);
+        })
+        .catch(err => {
+            callback(err);
+        });
 }
 
 // Function to check if the user is a project shareholder
 async function checkOrCreateShareholder() {
-    // Ensure credentials are loaded before making the API call
-    await loadRovasCredentials(); // IMPORTANT: Load credentials here
+    await loadRovasCredentials(); 
 
     if (!ROVAS_API_KEY || !ROVAS_TOKEN) {
         console.error("[ROVAS] Cannot perform shareholder check: ROVAS API Key or Token is missing.");
@@ -263,7 +274,6 @@ async function checkOrCreateShareholder() {
     };
 
     try {
-//        const response = await fetch("https://dev.rovas.app/rovas/rules/rules_proxy_check_or_add_shareholder", {
         const response = await fetch("https://rovas.app/rovas/rules/rules_proxy_check_or_add_shareholder", {
             method: "POST",
             headers: {
@@ -330,8 +340,7 @@ async function checkOrCreateShareholder() {
 
 // --- Function to automatically send the payload with confirm request ---
 async function sendRovasReport(changesetId) {
-    // Ensure credentials are loaded before doing anything
-    await loadRovasCredentials(); // IMPORTANT: Load credentials here
+    await loadRovasCredentials(); 
 
     // Stop if credentials are not available
     if (!ROVAS_API_KEY || !ROVAS_TOKEN) {
@@ -410,19 +419,17 @@ async function sendRovasReport(changesetId) {
         publish_status: 1
     };
     
-    // Non serve convertire in JSON qui
-
     try {
         let userMinutes = null;
         let validInput = false;
 
-        // Loop per costringere l'utente a inserire un valore valido o annullare
+        // Loop to enter a valid value or cancel
         while (!validInput) {
             const userConfirmation = prompt(
                 t('confirm_submit_report_prompt', {
                     id: changesetId,
                     duration_hms: initialFormattedDuration,
-					duration_decimal: initialMinutes
+                    duration_decimal: initialMinutes
                 }),
                 userMinutes !== null ? userMinutes : initialMinutes
             );
@@ -446,13 +453,12 @@ async function sendRovasReport(changesetId) {
             }
         }
 
-        // Ora che l'input è valido, puoi procedere con l'upload
+        // input is valid, we can upload
         const finalHours = Math.max(0.01, (userMinutes / 60).toFixed(2));
         rovasPayload.wr_hours = finalHours;
 
         console.log("[ROVAS] Submitting report with the modified duration.");
-
-//            const response = await fetch("https://dev.rovas.app/rovas/rules/rules_proxy_create_work_report", {        //dev environment
+        
         const response = await fetch("https://rovas.app/rovas/rules/rules_proxy_create_work_report", {
             method: "POST",
             headers: {
@@ -481,7 +487,7 @@ async function sendRovasReport(changesetId) {
         if (rovasReportId) {
             console.log(`[ROVAS] Report submitted automatically successfully. Rovas ID: ${rovasReportId}`);
             alert(t('alert_report_success', {id: rovasReportId}));
-            chargeUsageFee(rovasReportId, finalHours); // Usa finalHours, non actualDurationMs
+            chargeUsageFee(rovasReportId, finalHours);
         } else {
             alert(t('alert_report_id_missing'));
         }
@@ -496,13 +502,13 @@ async function sendRovasReport(changesetId) {
 }
 
 // --- Function to charge usage fee after successful work report ---
+// --- IN RESPECT OF DEVELOPERS, THIS SHALL NOT BE REMOVED IF THIS EXTENSION IS FORKED ---
 async function chargeUsageFee(wrId, laborHours) {
     console.log(`%c[ROVAS] Charging usage fee for work report ID: ${wrId}`, 'color: #FFD700; font-weight: bold;');
     
     // Calculate usage fee: 3% of (labor time * 10)
     const laborValue = laborHours * 10;
     const usageFee = Number((laborValue * 0.03).toFixed(2));
-
     
     const feePayload = {
         project_id: 429681, // project "Rovas Connector for ID"
@@ -512,7 +518,6 @@ async function chargeUsageFee(wrId, laborHours) {
     };
 
     try {
-//        const response = await fetch("https://dev.rovas.app/rovas/rules/rules_proxy_create_aur", {
         const response = await fetch("https://rovas.app/rovas/rules/rules_proxy_create_aur", {
             method: "POST",
             headers: {
@@ -541,38 +546,38 @@ async function chargeUsageFee(wrId, laborHours) {
 
 // Listener for messages from the Background script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.type === "CHANGESET_ID_DETECTED") {
-    // IMPORTANT: we need to be sure it does not activate more times for the same ID
-    if (latestChangesetId === request.changesetId) {
-        console.log(`%c[ROVAS Content] ID ${request.changesetId} already processed, ignored.`, 'color: gray;');
-        return;
+    if (request.type === "CHANGESET_ID_DETECTED") {
+        // IMPORTANT: we need to be sure it does not activate more times for the same ID
+        if (latestChangesetId === request.changesetId) {
+            console.log(`%c[ROVAS Content] ID ${request.changesetId} already processed, ignored.`, 'color: gray;');
+            return;
+        }
+
+        latestChangesetId = request.changesetId;
+        console.log(`%c[ROVAS Content] NEW Changeset ID received from background: ${request.changesetId}`, 'color: orange; font-weight: bold;');
+
+        // We call the function to send the report with confirm request
+        sendRovasReport(request.changesetId);
     }
-
-    latestChangesetId = request.changesetId;
-    console.log(`%c[ROVAS Content] NEW Changeset ID received from background: ${request.changesetId}`, 'color: orange; font-weight: bold;');
-
-    // We call the function to send the report with confirm request
-    sendRovasReport(request.changesetId);
-  }
 });
 
 // --- Listen for language changes and update badge dynamically ---
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'sync' && changes.userLang) {
-    // Remove the old badge if present
-    const badge = document.getElementById("rovas-timer-badge");
-    if (badge) badge.remove();
-    // Recreate the badge with the new language
-    createTimerBadge();
-  }
-  
-  // Listen for credential changes and show/hide timer badge
-  if (area === 'sync' && (changes.rovasApiKey || changes.rovasToken)) {
-    const badge = document.getElementById("rovas-timer-badge");
-    if (badge) badge.remove();
-    // Recreate the badge to check if credentials are now available
-    createTimerBadge();
-  }
+    if (area === 'sync' && changes.userLang) {
+        // Remove the old badge if present
+        const badge = document.getElementById("rovas-timer-badge");
+        if (badge) badge.remove();
+        // Recreate the badge with the new language
+        createTimerBadge();
+    }
+    
+    // Listen for credential changes and show/hide timer badge
+    if (area === 'sync' && (changes.rovasApiKey || changes.rovasToken)) {
+        const badge = document.getElementById("rovas-timer-badge");
+        if (badge) badge.remove();
+        // Recreate the badge to check if credentials are now available
+        createTimerBadge();
+    }
 });
 
 // We start the badge again after the report sending is done
@@ -584,6 +589,5 @@ const isOSEditor = host === "www.openstreetmap.org" && pathname === "/edit";
 const isRapidStandalone = host === "rapideditor.org" && pathname === "/edit";
 
 if (isOSEditor || isRapidStandalone) {
-  createTimerBadge();
+    createTimerBadge();
 }
-
