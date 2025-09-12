@@ -71,8 +71,8 @@ After installation, you need to configure your ROVAS API credentials:
    <img width="597" height="72" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr4.png" />
 
 2.	Enter Credentials: In the popup window, you'll find fields for your "API KEY" and "TOKEN."
-3.	Save Credentials: Enter your respective API Key and Token from your ROVAS account page, then click the "Save Credentials" button. A confirmation message will appear.
-   <img width="394" height="482" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr5.png" />
+3.	Save Credentials: Enter your respective API Key and Token from your ROVAS account page, then click the "Save Credentials" button. A confirmation message will appear just below the button.
+   <img width="400" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr5.png" />
 
 ________________________________________
 
@@ -89,9 +89,14 @@ ________________________________________
 3.	Upload Changeset: When you are finished with your edits, upload your changeset as usual.
 4.	Confirmation: Upon successful changeset upload, the extension will automatically attempt to submit a work report to ROVAS. You should see a confirmation message appear from the extension.
    
-   	<img width="477" height="283" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr7.png" />
+   	<img width="477" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr7.png" />
     
     **NOTE**: This message will summarize the work time and give you the option to adjust it if it's too high (for example, if you took a break during mapping). Always keep in mind that your report will need to be validated by two other Rovas users, so excessive times may result in rejection. For this reason, the time can only be adjusted downward.
+
+5. As a Rovas user, you'll be expected to be an active member of the community. Therefore, if you submit work reports, you'll also be responsible for reviewing those uploaded by other users. The platform will determine which ones are up to date, and you'll receive an email for each one, which you'll need to review by a set deadline. To make it easier for you, the links to these reports will also be listed within this extension and will be updated each time you open the popup. Clicking these links will take you to the Rovas page, where you can easily review them using the tools provided by the app.
+Last but not least, there's also a tab summarizing your statistics, i.e., the number of merits and chrons you've earned for your work. 
+
+    <img width="400" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr8.png" />
     
 
 ________________________________________
