@@ -39,13 +39,13 @@ Prerequisites:
 
 2.	Open Chrome Extensions Page:
     - Type chrome://extensions in your Chrome address bar and press Enter.
-    <img width="476" height="84" alt="Image" src="https://github.com/user-attachments/assets/6f403442-c08e-49ec-8b5c-c63f03579759" />
+    <img width="476" height="84" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr1.png" />
 
     - Alternatively, click the three dots (⋮) in the top right corner of Chrome, go to "More tools," and then select "Extensions."
 
 3.	Enable Developer Mode:
     - Locate the "Developer mode" toggle switch, usually in the top right corner of the extensions page, and turn it ON.
-    <img width="707" height="138" alt="Image" src="https://github.com/user-attachments/assets/3b2cac32-e2c7-45a7-817c-2ef684a7e8b5" />
+    <img width="707" height="138" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr2.png" />
 
 4.	Load Unpacked Extension:
     - Click the "Load unpacked" button that appears after enabling Developer Mode.
@@ -56,7 +56,7 @@ Prerequisites:
 
 6.	Verify Installation:
     - The "ROVAS Connector for iD Editor" extension should now appear in your list of installed extensions.
-      <img width="321" height="167" alt="Image" src="https://github.com/user-attachments/assets/697fbb21-957d-416d-98a1-da1fbe7f34a7" />
+      <img width="321" height="167" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr3.png" />
 
     - It's recommended to reboot Chrome for the extension to fully initialize after installation.
 
@@ -68,11 +68,11 @@ ________________________________________
 
 After installation, you need to configure your ROVAS API credentials:
 1.	Open the Extension Popup: Click on the "ROVAS Connector for iD Editor" icon in your Chrome toolbar.
-   <img width="597" height="72" alt="Image" src="https://github.com/user-attachments/assets/6a9b1b4c-4d17-47cc-9408-99d5641b2f03" />
+   <img width="597" height="72" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr4.png" />
 
 2.	Enter Credentials: In the popup window, you'll find fields for your "API KEY" and "TOKEN."
 3.	Save Credentials: Enter your respective API Key and Token from your ROVAS account page, then click the "Save Credentials" button. A confirmation message will appear.
-   <img width="394" height="482" alt="Image" src="https://github.com/user-attachments/assets/d30d8c32-d4a8-4247-9e35-f98057ff0289" />
+   <img width="394" height="482" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr5.png" />
 
 ________________________________________
 
@@ -84,12 +84,14 @@ ________________________________________
     - Use the "Pause" button to temporarily stop tracking time.
     - Use the "Start" button to resume a paused session or begin a new one if it was manually stopped.
     - Use the "Stop" button to manually end the current mapping session. (Note: Manually stopping will not generate a ROVAS report.)
-    <img width="610" height="377" alt="Image" src="https://github.com/user-attachments/assets/51ecd970-0364-4b8b-a82f-9af148cb45d5" />
+    <img width="610" height="377" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr6.png" />
 
 3.	Upload Changeset: When you are finished with your edits, upload your changeset as usual.
 4.	Confirmation: Upon successful changeset upload, the extension will automatically attempt to submit a work report to ROVAS. You should see a confirmation message appear from the extension.
    
-  	<img width="477" height="283" alt="Image" src="https://github.com/user-attachments/assets/594ebbc1-4b25-4a7f-bd3d-1d78301ea6cf" />
+   	<img width="477" height="283" alt="Image" src="https://github.com/dp7x/rovas-id-timetracker/blob/main/readme/idr7.png" />
+    
+    **NOTE**: This message will summarize the work time and give you the option to adjust it if it's too high (for example, if you took a break during mapping). Always keep in mind that your report will need to be validated by two other Rovas users, so excessive times may result in rejection. For this reason, the time can only be adjusted downward.
     
 
 ________________________________________
